@@ -1,0 +1,24 @@
+1.Crimecasefile = load 'Crimes_-_2001_to_present.csv' using PigStorage(',')as(ID:int,CaseNumber:chararray,Date:chararray,Block:chararray,IUCR:int,PrimaryType:chararray,
+Description:chararray,Location:chararray,Arrest:chararray,Domestic:chararray,Beat:int,District:int,Ward:int,CommunityArea:int,
+FBICode:chararray,XCoordinate:int,YCoordinate:int,Year:int,updatedon:chararray,Latitude:float,Longitude:float,Location1:chararray,Location2:chararray)
+
+   Crimegroup = GROUP Crimecasefile by FBICode;
+   dump Crimegroup;
+   CrimeCOUNT = FOREACH Crimegroup GENERATE COUNT(Crimecasefile);
+   dump CrimeCOUNT;
+
+2 Filtercrimecase = FILTER Crimecasefile BY FBICode == '32';
+  crimegroup = GROUP Filtercrimecase ALL;
+  FBI32COUNT = FOREACH crimegroup GENERATE COUNT(Filtercrimecase);
+  dump FBI32COUNT;
+
+3. TheftDistrict = FILTER Crimecasefile BY Arrest == 'true';
+    TheftDistrictgroup = GROUP TheftDistrict ALL;
+    Arrestcount = FOREACH TheftDistrictgroup GENERATE COUNT(TheftDistrict);
+    dump Arrestcount;
+
+4. Datebtwn = FILTER TheftDistrict BY Date >= '01/10/2014' AND Date <= '30/10/2015';
+   Datebtwngroup = GROUP Datebtwn ALL;
+    Datebtwncount = FOREACH Datebtwngroup GENERATE COUNT(Datebtwn);
+    dump Datebtwncount;
+  
