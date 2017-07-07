@@ -1,6 +1,10 @@
-1.Crimecasefile = load 'Crimes_-_2001_to_present.csv' using PigStorage(',')as(ID:int,CaseNumber:chararray,Date:chararray,Block:chararray,IUCR:int,PrimaryType:chararray,
+1.REGISTER '/usr/local/pig/lib/piggybank.jar';
+
+DEFINE CSVLoader org.apache.piggybank.storage.CSVLoader();
+A = load 'Crimes_-_2001_to_present.csv' USING org.apache.pig.piggybank.storage.CSVExcelStorage(',','NO_MULTILINE','UNIX','SKIP_INPUT_HEADER') as(ID:int,CaseNumber:chararray,Date:chararray,Block:chararray,IUCR:int,PrimaryType:chararray,
 Description:chararray,Location:chararray,Arrest:chararray,Domestic:chararray,Beat:int,District:int,Ward:int,CommunityArea:int,
-FBICode:chararray,XCoordinate:int,YCoordinate:int,Year:int,updatedon:chararray,Latitude:float,Longitude:float,Location1:chararray,Location2:chararray)
+FBICode:chararray,XCoordinate:int,YCoordinate:int,Year:int,updatedon:chararray,Latitude:float,Longitude:float,Location:chararray)
+Crimecasefile = FOREACH A GENERATE $0,$1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15;
 
    Crimegroup = GROUP Crimecasefile by FBICode;
    dump Crimegroup;
